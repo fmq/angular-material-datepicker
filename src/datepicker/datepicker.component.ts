@@ -5,7 +5,9 @@ import { MdDialog, MdDialogRef, MdDialogConfig, MdSnackBar } from '@angular/mate
 import { CalendarComponent } from './calendar.component';
 import { Month } from './month.model';
 import { Weekday } from './weekday.model';
-import { LANG_DE } from './lang-de';
+import { LANG_EN } from './lang-en';
+
+import * as moment from 'moment';
 
 @Component({
   selector: 'md-datepicker',
@@ -42,11 +44,6 @@ export class DatePickerComponent implements OnInit {
     return this.dateVal;
   };
 
-  private enLabels = {'ok': 'Ok',
-                      'cancel': 'Cancel',
-                      'today': 'Today'
-                    };
-
   set date(val: Date) {
     this.dateVal = val;
     this.dateChange.emit(val);
@@ -58,18 +55,35 @@ export class DatePickerComponent implements OnInit {
     data: {}
   };
 
+  private enLabels = {'ok': 'Ok',
+                    'cancel': 'Cancel',
+                    'today': 'Today'
+                  };
+
+
   constructor(dialog: MdDialog) {
     this.dialog = dialog;
-    this._dayNames = LANG_DE.weekDays;
-    this._monthNames = LANG_DE.months;
+    this._dayNames = LANG_EN.weekDays;
+    this._monthNames = LANG_EN.months;
   }
 
   ngOnInit() {
-    if (this.date === undefined) {
-      this.date = new Date();
-    }
-
     this.setLabels();
+  }
+
+  _updateDate($event) {
+    console.log($event);
+  }
+
+  // Validates the user input and if it's not a valid date it opens
+  // the dialog.
+  _validateDate() {
+
+    let dd = moment(this.date, this.format);
+    console.log(dd);
+    if (isNaN(new Date(this.date).getDate())) {
+      this._openDialog();
+    }
   }
 
   _openDialog() {

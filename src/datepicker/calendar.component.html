@@ -3,7 +3,7 @@
     <div class="date">{{ _currentDayOfWeek.short }}, {{ _currentMonth.short }} {{ _currentDay}} </div>
 </div>
 <div class="md-datepicker-wrapper">
-    <div class="md-datepicker-nav" [class.active]="!_isYearsVisible" >
+    <div class="md-datepicker-nav" [class.active]="!_isYearsVisible">
         <button md-icon-button class="left" (click)="_onPrevMonth()">
             <md-icon>chevron_left</md-icon>
         </button>
@@ -14,33 +14,23 @@
             <md-icon>chevron_right</md-icon>
         </button>
     </div>
-    <div class="md-datepicker-content"
-         [class.active]="!_isYearsVisible">
+    <div class="md-datepicker-content" [class.active]="!_isYearsVisible">
         <div class="labels">
-            <div class="label" 
-                *ngFor="let day of _dayNames">
+            <div class="label" *ngFor="let day of _dayNames">
                 {{ day.letter }}
             </div>
         </div>
         <div [@calendarAnimation]="animate" class="month">
-            <div *ngFor="let day of _displayDays" 
-                class="day" 
-                (click)="_onSelectDate(day)" 
-                [ngClass]="[_getDayBackgroundColor(day), day != 0 ? 'show' : '']">
-                <span *ngIf="day != 0" 
-                    [ngClass]="_getDayForegroundColor(day)">
+            <div *ngFor="let day of _displayDays" class="day" (click)="_onSelectDate(day)" (dblclick)="_onOk()" [ngClass]="[_getDayBackgroundColor(day), day != 0 ? 'show' : '']">
+                <span *ngIf="day != 0" [ngClass]="_getDayForegroundColor(day)">
                     {{ day.getDate() }}
                 </span>
             </div>
         </div>
     </div>
-    <div class="md-datepicker-years-selector" 
-        [class.active]="_isYearsVisible">
+    <div class="md-datepicker-years-selector" [class.active]="_isYearsVisible">
         <div class="content">
-        <div *ngFor="let year of _years"
-                (click)="_onSelectYear(year)"
-                class="year"
-                [class.selected]="year === date.getFullYear()">{{ year }}</div>
+            <div *ngFor="let year of _years" (click)="_onSelectYear(year)" class="year" [class.selected]="year === date.getFullYear()">{{ year }}</div>
         </div>
     </div>
 </div>
