@@ -21,7 +21,7 @@
             </div>
         </div>
         <div [@calendarAnimation]="animate" class="month">
-            <div *ngFor="let day of _displayDays" class="day" (click)="_onSelectDate(day)" (dblclick)="_onOk()" [ngClass]="[_getDayBackgroundColor(day), day != 0 ? 'show' : '']">
+            <div *ngFor="let day of _displayDays" class="day" (click)="_onSelectDate(day)" (dblclick)="_selectAndClose(day)" [ngClass]="[_getDayBackgroundColor(day), day != 0 ? 'show' : '']">
                 <span *ngIf="day != 0" [ngClass]="_getDayForegroundColor(day)">
                     {{ day.getDate() }}
                 </span>

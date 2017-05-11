@@ -33,6 +33,10 @@ export class DatePickerComponent implements OnInit {
   @Input()
   format = 'mediumDate';
 
+  // response type expected. can be date | time
+  @Input()
+  responseFormat = 'time';
+
   @Input()
   locale = 'en-US';
 
@@ -40,11 +44,11 @@ export class DatePickerComponent implements OnInit {
   labels: {};
 
   @Input()
-  get date(): Date {
+  get date(): any {
     return this.dateVal;
   };
 
-  set date(val: Date) {
+  set date(val: any) {
     this.dateVal = val;
     this.dateChange.emit(val);
   }
@@ -72,23 +76,27 @@ export class DatePickerComponent implements OnInit {
   }
 
   _updateDate($event) {
-    console.log($event);
-  }
+    // create the date
+    // If we fail then open the dialog
+    try {
+      let d: Date = new Date($event.target.value);
+      // validate against input format.
+      new DatePipe(this.locale).transform(d, this.format);
 
-  // Validates the user input and if it's not a valid date it opens
-  // the dialog.
-  _validateDate() {
+      // if all is well set the date based on expected return (date | time).
+      this.date = this.responseFormat === 'time' ? d.getTime() : d;
 
-    let dd = moment(this.date, this.format);
-    console.log(dd);
-    if (isNaN(new Date(this.date).getDate())) {
+    } catch (_ex) {
+      console.log(_ex);
       this._openDialog();
     }
   }
 
   _openDialog() {
-
-    this.config.data.date = this.date;
+    console.log('_openDialog');
+    if (this.date) {
+      this.config.data.date = new Date(this.date);
+    }
 
     let ref = this.dialog.open(CalendarComponent, this.config);
 
@@ -98,6 +106,7 @@ export class DatePickerComponent implements OnInit {
 
     ref.componentInstance.submit.subscribe(result => {
       this.date = result;
+      this.dateChange.emit(result.getTime());
       ref.close();
     });
     ref.componentInstance.cancel.subscribe(result => {

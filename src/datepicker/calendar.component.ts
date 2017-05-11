@@ -76,7 +76,9 @@ export class CalendarComponent implements OnInit {
 
   animate: string;
 
-  _labels:any = {};
+  _labels: any = {};
+
+  private selectDatetimeout: any;
 
   constructor(calendarService: CalendarService, @Inject(MD_DIALOG_DATA) private data: any) {
 
@@ -142,7 +144,10 @@ export class CalendarComponent implements OnInit {
   }
 
   _onSelectDate(date: Date) {
-    this.date = date;
+    this.selectDatetimeout = setTimeout(() => {
+      this.date = date;
+    }, 150);
+
   }
 
   _onSelectYear(year: number) {
@@ -154,6 +159,17 @@ export class CalendarComponent implements OnInit {
     this._isYearsVisible = false;
   }
 
+  _selectAndClose(date: Date){
+    // Cancel the selectDateTimeout 
+    if (this.selectDatetimeout) {
+      clearTimeout(this.selectDatetimeout);
+    }
+    // Set the date
+    this.date = date;
+    // submit to close
+    this._onOk();
+
+  }
   _onCancel() {
     this.cancel.emit();
   }

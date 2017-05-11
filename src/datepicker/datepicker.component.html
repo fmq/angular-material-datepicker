@@ -1,4 +1,4 @@
 <md-input-container>
-    <input mdInput (dblclick)="_openDialog()" (keyup.enter)="_openDialog()" (keydown.tab)="_validateDate()" (change)="_updateDate()" [ngModel]="date | date: format" style="float:none" [placeholder]="placeholder">
+    <input mdInput [name]="name" (dblclick)="_openDialog()" (keyup.enter)="_openDialog()" (change)="_updateDate($event)" [ngModel]="date | date: format" style="float:none" [placeholder]="placeholder">
     <md-icon (click)="_openDialog()" clas="pre" mdSuffix> date_range </md-icon>
 </md-input-container>

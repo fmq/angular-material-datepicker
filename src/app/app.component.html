@@ -1,7 +1,7 @@
 <md-toolbar color="primary">
     <h1>{{title}}</h1>
 </md-toolbar>
-<div style="width: 300px;">
-    <md-datepicker [(date)]="mydate" placeholder="Select a date" format="dd-MM-yyyy" [labels]="calendarLabels"></md-datepicker>
+<div style="width: 300px; padding-left: 20px;">
+    <md-datepicker name="foo" [(date)]="mydate" placeholder="Select a date" format="dd-MM-yyyy" responseFormat="date" [labels]="calendarLabels"></md-datepicker>
 </div>
 <p>Selected Date: {{mydate}}</p>
