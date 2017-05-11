@@ -10,7 +10,7 @@ import { LANG_DE } from './lang-de';
 @Component({
   selector: 'md-datepicker',
   templateUrl: './datepicker.component.html',
-  styleUrls: ['./datepicker.component.css']
+  styleUrls: ['./datepicker.component.scss']
 })
 export class DatePickerComponent implements OnInit {
 
