@@ -6,6 +6,7 @@ import { MaterialModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { DatePickerModule } from './../datepicker/datepicker.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { DatePickerModule } from './../datepicker/datepicker.module';
     FormsModule,
     HttpModule,
     MaterialModule.forRoot(),
-    DatePickerModule
+    DatePickerModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

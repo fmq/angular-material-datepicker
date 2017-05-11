@@ -1,130 +1,233 @@
-@import '~@angular/material/core/theming/all-theme';
+@import '~@angular/material/_theming.scss';
 @mixin calendar-theme($theme) {
-  $primary: map-get($theme, primary);
 
-    .header {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $background: map-get($theme, background);
+
+    .md-datepicker-header {
         padding: 16px;
-        background-color:md-color($primary);
+        background-color:mat-color($primary);
+
+        &[mode='landscape'] & {
+            width: 150px;
+            min-width: 150px;
+            padding-right: 15px;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+        .year {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
+        
+        .date {
+            color: rgba(255, 255, 255, 255);
+            font-size: 32px;
+            font-weight: 400;
+        }
     }
-    .footer [md-button] {
-        color: md-color($primary);
+
+    
+    .md-datepicker-header, .md-datepicker-nav, .md-datepicker-content, .md-datepicker-footer {
+        font-family: Roboto, "Segoe UI", "Helvetica Neue",sans-serif;
     }
-    .day-background-normal {
-        background-color: transparent;
+    
+    .md-datepicker-wrapper {
+        
+        background: mat-color($background, dialog);
+        position: relative;
+        
+        .md-datepicker-nav {
+            padding-top:8px;
+            padding-bottom:8px;
+            min-height: 40px;
+            overflow: hidden;
+            position: relative;
+            background: transparent;
+            left: 100%;
+
+            &.active {
+                left: 0%;
+            }
+
+            .left {
+                position: absolute;
+                left: 8px;
+                z-index: 100;
+                background: transparent;
+            }
+            
+            .right {
+                position: absolute;
+                right: 8px;
+                z-index: 100;
+                background: transparent;
+            }
+            
+            .title {
+                position: absolute;
+                left: 0px;
+                right: 0px;
+                line-height: 40px;
+                text-align: center;
+                font-size: 14px;
+                font-weight: 400;
+                overflow: hidden;
+                z-index: 10;
+            }
+        }
+
+        .md-datepicker-content {
+            font-size: 13px;
+            padding-left: 8px;
+            padding-right: 8px;
+            height: 18.2em;
+            overflow: hidden;
+            background: transparent;
+            
+            left: 100%;
+
+            &.active {
+                left: 0%;
+            }
+
+            .labels {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-pack: center;
+                    -ms-flex-pack: center;
+                    justify-content: center;
+                width: 100%;
+            }
+            
+            .label {
+                display: inline-block;
+                width: 2.2em;
+                height: 2.2em;
+                margin: 0 0.2em;
+                line-height: 2.2em;
+                text-align: center;
+                color: rgba(0, 0, 0, 0.4);
+            }
+            
+            .month {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -ms-flex-flow: wrap;
+                    flex-flow: wrap;
+                -webkit-box-pack: center;
+                    -ms-flex-pack: center;
+                    justify-content: center;
+            }
+            
+            .day {
+                display: inline-block;
+                width: 2.2em;
+                height: 2.2em;
+                margin: 0 0.2em 0.4em;
+                border-radius: 2.2em;
+                line-height: 2.2em;
+                text-align: center;
+                -webkit-transition: 0.37s;
+                transition: 0.37s;
+                cursor: pointer;
+
+                &.day-background-normal {
+                    background-color: transparent;
+                    cursor: default;
+                    &.show {
+                        &:hover,
+                        &.focus {
+                            cursor: pointer;
+                            background: darken(white, 15%);
+                        }
+                    }
+                }
+                
+                &.day-background-selected {
+                    background-color: mat-color($primary);
+                }
+
+                .day-foreground-normal {
+                    color: rgba(black, .87);
+                }
+
+                .day-foreground-selected {
+                    color: rgba(white, 0.87);
+                }
+
+                .day-foreground-today {
+                    color: mat-color($primary);
+                }
+            }
+        }
     }
-    .day-background-selected {
-        background-color: md-color($primary);
+    
+    .md-datepicker-footer {
+        text-align: right;
+        padding: 8px;
+        padding-bottom: 16px;
+        background: mat-color($background, dialog);
+    
+        [md-button] {
+            min-width: 0;
+            font-weight: 400;
+            text-transform: uppercase;
+            color: mat-color($primary);
+            padding: 8px;
+
+            &.left {
+                float: left;
+            }
+        }
     }
-    .day-foreground-normal {
-        color: rgba(0, 0, 0, .87);
+
+
+    .md-datepicker-years-selector {
+
+        position: absolute;
+        top: 10px;
+        right: 100%;
+        bottom: 10px;
+        display: block;
+        width: 100%;
+        line-height: 40px;
+        background: white;
+        overflow-x: hidden;
+        overflow-y: auto;
+        transition: 300ms;
+
+        &.active {
+            right: 0;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100%;
+        }
+
+        .year {
+            font-size: 1.0em;
+            opacity: 0.7;
+            cursor: pointer;
+            text-align: center;
+
+            &.selected {
+                font-size: 1.4em;
+                color: mat-color($primary);
+                opacity: 1;
+                pointer-events: none;
+            }
+            &:hover {
+                font-size: 1.4em;
+            }
+        }
     }
-    .day-foreground-selected {
-        color: rgba(255, 255, 255, .87);
-    }
-    .day-foreground-today {
-        color: md-color($primary);
-    }
-}
-.header, .nav, .content, .footer {
-    font-family: Roboto, "Segoe UI", "Helvetica Neue",sans-serif;
-}
-.header {
-    padding: 16px;
-}
-.header .year {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 4px;
-}
-.header .date {
-    color: rgba(255, 255, 255, 255);
-    font-size: 32px;
-    font-weight: 600;
-}
-.nav {
-    padding-top:8px;
-    padding-bottom:8px;
-    min-height: 40px;
-    overflow: hidden;
-    position: relative;
-}
-.nav .left {
-    position: absolute;
-    left: 8px;
-    z-index: 100;
-}
-.nav .right {
-    position: absolute;
-    right: 8px;
-    z-index: 100;
-}
-.nav .title {
-    position: absolute;
-    left: 0px;
-    right: 0px;
-    line-height: 40px;
-    text-align: center;
-    font-size: 14px;
-    font-weight: 600;
-    overflow: hidden;
-    z-index: 10;
-}
-.content {
-    font-size: 13px;
-    padding-left: 8px;
-    padding-right: 8px;
-    width: 18.2em;
-    height: 18.2em;
-    overflow: hidden;
-}
-.content .labels {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-    width: 100%;
-}
-.content .label {
-    display: inline-block;
-    width: 2.2em;
-    height: 2.2em;
-    margin: 0 0.2em;
-    line-height: 2.2em;
-    text-align: center;
-    color: rgba(0, 0, 0, 0.4);
-}
-.content .month {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-flow: wrap;
-        flex-flow: wrap;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-}
-.content .day {
-    display: inline-block;
-    width: 2.2em;
-    height: 2.2em;
-    margin: 0 0.2em 0.4em;
-    border-radius: 2.2em;
-    line-height: 2.2em;
-    text-align: center;
-    -webkit-transition: 0.37s;
-    transition: 0.37s;
-    cursor: pointer;
-}
-.footer {
-    text-align: right;
-    padding: 8px;
-    padding-bottom: 16px;
-}
-.footer [md-button] {
-    min-width: 0;
-    font-weight: 600;
-    text-transform: uppercase;
 }

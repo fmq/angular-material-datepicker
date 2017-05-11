@@ -1,34 +1,51 @@
-<div class="header">
-    <div class="year">{{ currentYear }}</div>
-    <div class="date">{{ currentDayOfWeek.short }}, {{ currentDay}}. {{ currentMonth.short }}</div>
+<div class="md-datepicker-header" [attr.mode]="landscape">
+    <div class="year" (click)="_showYears()">{{ _currentYear }}</div>
+    <div class="date">{{ _currentDayOfWeek.short }}, {{ _currentMonth.short }} {{ _currentDay}} </div>
 </div>
-<div class="nav">
-    <button md-icon-button class="left" (click)="onPrevMonth()">
-        <md-icon>chevron_left</md-icon>
-    </button>
-    <div class="title">
-        <div [@calendarAnimation]="animate">{{ displayMonth.full }} {{ displayYear }}</div>
+<div class="md-datepicker-wrapper">
+    <div class="md-datepicker-nav" [class.active]="!_isYearsVisible" >
+        <button md-icon-button class="left" (click)="_onPrevMonth()">
+            <md-icon>chevron_left</md-icon>
+        </button>
+        <div class="title">
+            <div [@calendarAnimation]="animate">{{ _displayMonth.full }} <span (click)="_showYears()">{{ _displayYear }}</span></div>
+        </div>
+        <button md-icon-button class="right" (click)="_onNextMonth()">
+            <md-icon>chevron_right</md-icon>
+        </button>
     </div>
-    <button md-icon-button class="right" (click)="onNextMonth()">
-        <md-icon>chevron_right</md-icon>
-    </button>
-</div>
-<div class="content">
-    <div class="labels">
-        <div class="label" *ngFor="let day of dayNames">
-            {{ day.letter }}
+    <div class="md-datepicker-content"
+         [class.active]="!_isYearsVisible">
+        <div class="labels">
+            <div class="label" 
+                *ngFor="let day of _dayNames">
+                {{ day.letter }}
+            </div>
+        </div>
+        <div [@calendarAnimation]="animate" class="month">
+            <div *ngFor="let day of _displayDays" 
+                class="day" 
+                (click)="_onSelectDate(day)" 
+                [ngClass]="[_getDayBackgroundColor(day), day != 0 ? 'show' : '']">
+                <span *ngIf="day != 0" 
+                    [ngClass]="_getDayForegroundColor(day)">
+                    {{ day.getDate() }}
+                </span>
+            </div>
         </div>
     </div>
-    <div [@calendarAnimation]="animate" class="month">
-        <div *ngFor="let day of displayDays" class="day" (click)="onSelectDate(day)" [ngClass]="getDayBackgroundColor(day)">
-            <span *ngIf="day != 0" [ngClass]="getDayForegroundColor(day)">
-                {{ day.getDate() }}
-              </span>
+    <div class="md-datepicker-years-selector" 
+        [class.active]="_isYearsVisible">
+        <div class="content">
+        <div *ngFor="let year of _years"
+                (click)="_onSelectYear(year)"
+                class="year"
+                [class.selected]="year === date.getFullYear()">{{ year }}</div>
         </div>
     </div>
 </div>
-<div class="footer">
-    <a md-button (click)="onToday()">Today</a>
-    <a md-button (click)="onCancel()">Cancel</a>
-    <a md-button (click)="onOk()">Ok</a>
+<div class="md-datepicker-footer">
+    <a md-button class="left" (click)="_onToday()">{{_labels.today}}</a>
+    <a md-button (click)="_onCancel()">{{_labels.cancel}}</a>
+    <a md-button (click)="_onOk()">{{_labels.ok}}</a>
 </div>

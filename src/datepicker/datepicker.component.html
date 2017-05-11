@@ -1,1 +1,4 @@
-<span class="selected-date" (click)="openDialog()">{{formattedDate}}</span>
+<md-input-container >
+    <input mdInput (dblclick)="_openDialog()" (enter)="_openDialog()" [ngModel]="date | date: format" style="float:none" [placeholder]="placeholder">
+    <md-icon (click)="_openDialog()" clas="pre" mdSuffix> date_range </md-icon>
+</md-input-container>

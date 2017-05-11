@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
 import { DatePickerComponent } from './datepicker.component';
 import { CalendarComponent } from './calendar.component';
 import { CalendarService } from './calendar.service';
@@ -12,6 +13,7 @@ import { CalendarService } from './calendar.service';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     MaterialModule.forRoot()
   ],
   exports: [

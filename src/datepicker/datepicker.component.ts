@@ -1,5 +1,6 @@
 import { Component, Output, Input, EventEmitter, OnInit } from '@angular/core';
-import { MdDialog } from '@angular/material';
+import { DatePipe } from '@angular/common';
+import { MdDialog, MdDialogRef, MdDialogConfig, MdSnackBar } from '@angular/material';
 
 import { CalendarComponent } from './calendar.component';
 import { Month } from './month.model';
@@ -13,40 +14,69 @@ import { LANG_DE } from './lang-de';
 })
 export class DatePickerComponent implements OnInit {
 
-  private readonly dialog:MdDialog;
+  private readonly dialog: MdDialog;
   private dateVal: Date;
 
-  dayNames: Array<Weekday>;
-  monthNames: Array<Month>;
-  formattedDate: string;
-  
-  @Output() 
+  _dayNames: Array<Weekday>;
+  _monthNames: Array<Month>;
+  _formattedDate: Date;
+  _yearSelectorVisible = false;
+
+  @Output()
   dateChange = new EventEmitter<Date>();
 
-  @Input() 
-  get date(): Date { 
-    return this.dateVal; 
+  @Input()
+  placeholder: string;
+
+  @Input()
+  format = 'mediumDate';
+
+  @Input()
+  locale = 'en-US';
+
+  @Input()
+  labels: {};
+
+  @Input()
+  get date(): Date {
+    return this.dateVal;
   };
+
+  private enLabels = {'ok': 'Ok',
+                      'cancel': 'Cancel',
+                      'today': 'Today'
+                    };
+
   set date(val: Date) {
     this.dateVal = val;
     this.dateChange.emit(val);
-    this.formattedDate = this.formatDate(val);
   }
+
+  config: MdDialogConfig = {
+    disableClose: true,
+    width: '276px',
+    data: {}
+  };
 
   constructor(dialog: MdDialog) {
     this.dialog = dialog;
-    this.dayNames = LANG_DE.weekDays;
-    this.monthNames = LANG_DE.months;
+    this._dayNames = LANG_DE.weekDays;
+    this._monthNames = LANG_DE.months;
   }
 
   ngOnInit() {
     if (this.date === undefined) {
       this.date = new Date();
     }
+
+    this.setLabels();
   }
 
-  openDialog() {
-    let ref = this.dialog.open(CalendarComponent);
+  _openDialog() {
+
+    this.config.data.date = this.date;
+
+    let ref = this.dialog.open(CalendarComponent, this.config);
 
     // Workaround to update style of dialog which sits outside of the component
     let containerDiv = (<any>ref)._overlayRef._pane.children[0];
@@ -61,14 +91,23 @@ export class DatePickerComponent implements OnInit {
     });
   }
 
-  private formatDate(date:Date): string {
-    if (date === undefined) {
-      return ;
+  private setLabels() {
+    // Set default labels
+    if (!this.labels) {
+      this.labels = this.enLabels;
+    } else {
+      // complete missing attributes.
+      for (let prop in this.enLabels ) {
+          if ( this.enLabels.hasOwnProperty(prop) ) {
+              if ( !(this.labels[prop]) ) {
+                  this.labels[prop] = this.enLabels[prop];
+              }
+          }
+      }
     }
-    let dayOfWeek = this.dayNames[date.getDay()].short;
-    let dayOfMonth = date.getDate();
-    let month = this.monthNames[date.getMonth()].short;
-    let year = date.getFullYear();
-    return `${dayOfWeek}, ${dayOfMonth}. ${month} ${year}`;
+
+    // Set the labels for the CalendarComponent
+    this.config.data.labels = this.labels;
   }
+
 }
