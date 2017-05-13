@@ -10,9 +10,15 @@ import { LANG_EN } from './lang-en';
 import * as moment from 'moment';
 
 @Component({
+  moduleId: module.id,
   selector: 'md-datepicker',
   templateUrl: './datepicker.component.html',
-  styleUrls: ['./datepicker.component.scss']
+  styleUrls: ['./datepicker.component.scss'],
+  host: {
+    '[attr.tabindex]': 'tabIndex',
+    '[attr.aria-disabled]': 'disabled ? disabled.toString() : ""',
+    '[attr.aria-required]': 'required ? required.toString() : ""'
+  }
 })
 export class DatePickerComponent implements OnInit {
 
@@ -40,6 +46,20 @@ export class DatePickerComponent implements OnInit {
   @Input()
   locale = 'en-US';
 
+  private _required = false;
+  private _disabled = false;
+
+  @Input()
+  get required() { return this._required; }
+  set required(value: any) { this._required = value; }
+
+  @Input()
+  get disabled() { return this._disabled; }
+  set disabled(value: any) {
+    // if attribute is present then we disable the component
+    this._disabled = true;
+  }
+
   @Input()
   labels: {};
 
@@ -47,6 +67,9 @@ export class DatePickerComponent implements OnInit {
   get date(): any {
     return this.dateVal;
   };
+
+  @Input()
+  requiredMessage = 'This field is required';
 
   set date(val: any) {
     this.dateVal = val;
@@ -93,7 +116,11 @@ export class DatePickerComponent implements OnInit {
   }
 
   _openDialog() {
-    console.log('_openDialog');
+console.log('ADASDASDASDASD' , this._disabled);
+    if (this._disabled) {
+      return;
+    }
+
     if (this.date) {
       this.config.data.date = new Date(this.date);
     }
