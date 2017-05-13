@@ -12,7 +12,12 @@ import * as moment from 'moment';
 @Component({
   selector: 'md-datepicker',
   templateUrl: './datepicker.component.html',
-  styleUrls: ['./datepicker.component.scss']
+  styleUrls: ['./datepicker.component.scss'],
+  host: {
+    '[attr.tabindex]': 'tabIndex',
+    '[attr.aria-required]': 'required.toString()',
+    '[attr.aria-disabled]': 'disabled.toString()'
+  }
 })
 export class DatePickerComponent implements OnInit {
 
