@@ -69,7 +69,7 @@ export class DatePickerComponent implements OnInit {
   };
 
   @Input()
-  requiredMessage = 'This field is required';
+  requiredMessage: string;
 
   set date(val: any) {
     this.dateVal = val;
